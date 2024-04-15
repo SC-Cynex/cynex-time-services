@@ -1,5 +1,8 @@
 const express = require("express");
+const dotenv = require('dotenv');
 const app = express();
+
+dotenv.config();
 
 // Configuração do middleware do express
 app.use(express.json());
