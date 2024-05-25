@@ -3,11 +3,11 @@ FROM node:alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json prisma/schema.prisma ./
 
 RUN npm install --save @nestjs/core @nestjs/common @nestjs/platform-express
 RUN npm install
-RUN npx prisma generate --schema=./prisma/schema.prisma
+RUN npx prisma generate
 
 COPY . .
 
