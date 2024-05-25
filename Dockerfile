@@ -5,6 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
+RUN npm cache clean --force
 RUN npm install --save @nestjs/core @nestjs/common @nestjs/platform-express
 RUN npm install
 
