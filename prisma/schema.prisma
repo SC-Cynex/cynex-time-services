@@ -10,5 +10,73 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("POSTGRES_URL")
+}
+
+enum RoleNames {
+  EMPLOYEE
+  MANAGER
+  ADMIN
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  addressId  Int?
+  teamId     Int?
+  hourId     Int?
+  roleId     Int?
+  name       String
+  email      String    @unique
+  department String
+  password   String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  address    Address?  @relation(fields: [addressId], references: [id])
+  team       Team?     @relation(fields: [teamId], references: [id])
+  hour       Hour?     @relation(fields: [hourId], references: [id])
+  Role       Role?     @relation(fields: [roleId], references: [id])
+  PointEv    PointEv[]
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  leaderId  Int?
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+}
+
+model Role {
+  id        Int       @id @default(autoincrement())
+  name      RoleNames
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  users     User[]
+}
+
+model Address {
+  id      Int    @id @default(autoincrement())
+  street  String
+  city    String
+  state   String
+  zipCode String
+  country String
+  users   User[]
+}
+
+model PointEv {
+  id        Int      @id @default(autoincrement())
+  hour      DateTime
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Hour {
+  id        Int    @id @default(autoincrement())
+  start     String
+  end       String
+  lunchTime String
+  User      User[]
 }
