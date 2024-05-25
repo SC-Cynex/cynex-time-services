@@ -20,22 +20,23 @@ enum RoleNames {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  addressId  Int?
-  teamId     Int?
-  hourId     Int?
-  roleId     Int?
-  name       String
-  email      String    @unique
-  department String
-  password   String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  address    Address?  @relation(fields: [addressId], references: [id])
-  team       Team?     @relation(fields: [teamId], references: [id])
-  hour       Hour?     @relation(fields: [hourId], references: [id])
-  Role       Role?     @relation(fields: [roleId], references: [id])
-  PointEv    PointEv[]
+  id           Int         @id @default(autoincrement())
+  addressId    Int?
+  teamId       Int?
+  hourId       Int?
+  departmentId Int?
+  roleId       Int?
+  name         String
+  email        String      @unique
+  password     String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  address      Address?    @relation(fields: [addressId], references: [id])
+  team         Team?       @relation(fields: [teamId], references: [id])
+  hour         Hour?       @relation(fields: [hourId], references: [id])
+  Role         Role?       @relation(fields: [roleId], references: [id])
+  PointEv      PointEv[]
+  Department   Department? @relation(fields: [departmentId], references: [id])
 }
 
 model Team {
@@ -52,6 +53,14 @@ model Role {
   name      RoleNames
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  users     User[]
+}
+
+model Department {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   users     User[]
 }
 
