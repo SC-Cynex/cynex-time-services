@@ -50,9 +50,12 @@ export class UserService {
     if (!passwordMatches)
       throw new Error('Invalid credentials');
 
-    // Gerar token jwt e retornar
     const payload = { userId: user.id, email: user.email, role: user.name };
     return this.jwtService.sign(payload, { secret: this.secret });;
+  }
+
+  async deleteUser(id: number): Promise<User> {
+    return this.userRepository.deleteUser(id);
   }
 
   async getUserByEmail(email: string): Promise<User | null> {

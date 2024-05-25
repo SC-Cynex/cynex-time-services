@@ -27,4 +27,9 @@ export class UserController {
   async login(@Body('email') email: string, @Body('password') password: string): Promise<string> {
     return await this.userService.login(email, password);
   }
+
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string): Promise<User> {
+    return await this.userService.deleteUser(+id);
+  }
 }
