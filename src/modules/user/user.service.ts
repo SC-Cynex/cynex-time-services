@@ -16,6 +16,15 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) {}
 
+  async getUsers(): Promise<User[]> {
+    const users = await this.userRepository.getUsers();
+
+    for (let user of users)
+      delete user.password;
+
+    return users;
+  }
+
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     const existingUser = await this.getUserByEmail(data.email);
 
