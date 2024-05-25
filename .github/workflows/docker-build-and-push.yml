@@ -24,9 +24,9 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: cynexsc/${{ basename(github.repository) }}:${{ github.ref_name }}
+        tags: cynexsc/cynex-time-services:${{ github.ref_name }}
 
     - name: Message
       run: |
         echo "Image uploaded successfully to Docker Hub!" >> $GITHUB_STEP_SUMMARY
-        echo "Image name: cynexsc/${{ basename(github.repository) }}:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "Image name: cynexsc/cynex-time-services:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
