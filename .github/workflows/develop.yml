@@ -28,7 +28,7 @@ jobs:
     - run: npm run build dev
 
   docker:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     needs: build
     uses: ./.github/workflows/docker-build-and-push.yml
     secrets: inherit
