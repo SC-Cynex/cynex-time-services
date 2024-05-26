@@ -24,13 +24,13 @@ export class PointController {
       const hour = await this.pointService.create(createPointDto);
       return {
         status: "success",
-        message: "Seu ponto foi registrado com sucesso às" + hour.hour,
-        statusCode: HttpStatus.ACCEPTED,
+        message: "Seu ponto foi registrado com sucesso às " + hour.hour,
+        statusCode: HttpStatus.CREATED,
       };
     } catch (error) {
       throw new HttpException(
         "Erro ao registrar o ponto" + error,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }
@@ -38,6 +38,11 @@ export class PointController {
   @Get()
   findAll() {
     return this.pointService.findAll();
+  }
+
+  @Get("last-eight/:userId")
+  async findLastEightPointsByUserId(@Param("userId") userId: string) {
+    return this.pointService.findLastEightPointsByUserId(+userId);
   }
 
   @Get(":id")

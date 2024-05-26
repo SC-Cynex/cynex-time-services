@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "PointEv" ALTER COLUMN "hour" SET DATA TYPE TEXT;

@@ -76,7 +76,7 @@ model Address {
 
 model PointEv {
   id        Int      @id @default(autoincrement())
-  hour      DateTime
+  hour      String
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
