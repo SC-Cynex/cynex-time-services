@@ -40,15 +40,16 @@ export class UserService {
   async login(email: string, password: string): Promise<string> {
     const user = await this.getUserByEmail(email);
 
-    if (!user) throw new Error("Invalid credentials");
-
-    const passwordMatches = await bcrypt.compare(password);
-
-    if (!passwordMatches) throw new Error("Invalid credentials");
+    if (!user) throw new Error("Credenciais inválidas");
+    
+    const passwordMatches = await bcrypt.compare(password, user.password);
+    
+    if (!passwordMatches) throw new Error("Credenciais inválidas");
 
     const payload = { userId: user.id, email: user.email, role: user.name };
     return this.jwtService.sign(payload, { secret: this.secret });
-  }
+}
+
 
   async deleteUser(id: number): Promise<User> {
     return this.userRepository.deleteUser(id);
