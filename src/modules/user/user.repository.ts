@@ -1,11 +1,8 @@
-import { Prisma, User } from '@prisma/client';
-import { PrismaService } from 'src/services/prisma/prisma.service';
+import { Prisma, User } from "@prisma/client";
+import { PrismaService } from "src/services/prisma/prisma.service";
 
 export class UserRepository {
-
-    constructor(
-        private readonly prisma: PrismaService
-    ) { }
+    constructor(private readonly prisma: PrismaService) { }
 
     async createUser(data: Prisma.UserCreateInput): Promise<User> {
         try {
@@ -39,7 +36,10 @@ export class UserRepository {
         }
     }
 
-    async updateUser(id: number, data: Prisma.UserUpdateInput): Promise<User | null> {
+    async updateUser(
+        id: number,
+        data: Prisma.UserUpdateInput
+    ): Promise<User | null> {
         return this.prisma.user.update({ where: { id }, data });
     }
 
