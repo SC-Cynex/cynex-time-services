@@ -14,11 +14,11 @@ import { SeedService } from './services/seed/seed.service';
     RoleModule,
     TeamModule,
     DepartmentModule,
+    SeedModule,
     ConfigModule.forRoot({
       load: [configurationConfig],
       isGlobal: true
     }),
-    SeedModule,
   ],
   controllers: [],
   providers: [
