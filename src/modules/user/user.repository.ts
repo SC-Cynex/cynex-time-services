@@ -4,7 +4,7 @@ import { PrismaService } from "src/services/prisma/prisma.service";
 const prisma = new PrismaService();
 
 export class UserRepository {
-    constructor(private readonly prisma: PrismaService) { }
+    constructor() { }
 
     async createUser(data: Prisma.UserCreateInput): Promise<User> {
         try {
