@@ -17,7 +17,6 @@ export class UserRepository {
     async getUsers(): Promise<User[]> {
         try {
             let users = await prisma.user.findMany();
-            debugger
             return users;
         } catch (error) {
             throw new Error(error);
