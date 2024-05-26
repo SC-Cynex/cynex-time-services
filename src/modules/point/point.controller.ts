@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   HttpStatus,
-  HttpException,
 } from "@nestjs/common";
 import { PointService } from "./point.service";
 import { Prisma } from "@prisma/client";
@@ -28,10 +27,11 @@ export class PointController {
         statusCode: HttpStatus.CREATED,
       };
     } catch (error) {
-      throw new HttpException(
-        "Erro ao registrar o ponto" + error,
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      return {
+        status: "error",
+        message: "Erro ao registrar o ponto!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
     }
   }
 

@@ -34,7 +34,6 @@ export class PointService {
 
   async findLastEightPointsByUserId(userId: number): Promise<PointEv[]> {
     try {
-      // Chame o método correspondente do repositório para buscar os últimos 8 registros de ponto
       return await this.pointRepository.findLastEightPointsByUserId(userId);
     } catch (error) {
       throw new Error(`Service Error: ${error.message}`);
