@@ -11,7 +11,7 @@ export class UserService {
   private readonly secret = this.configService.get<string>("jwt.secret");
 
   constructor(
-    private readonly userRepository: UserRepository,
+    private userRepository: UserRepository,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService
   ) { }

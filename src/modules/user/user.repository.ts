@@ -1,12 +1,14 @@
 import { Prisma, User } from "@prisma/client";
 import { PrismaService } from "src/services/prisma/prisma.service";
 
+const prisma = new PrismaService();
+
 export class UserRepository {
     constructor(private readonly prisma: PrismaService) { }
 
     async createUser(data: Prisma.UserCreateInput): Promise<User> {
         try {
-            return this.prisma.user.create({ data });
+            return prisma.user.create({ data });
         } catch (error) {
             throw new Error(error);
         }
@@ -14,7 +16,9 @@ export class UserRepository {
 
     async getUsers(): Promise<User[]> {
         try {
-            return this.prisma.user.findMany();
+            let users = await prisma.user.findMany();
+            debugger
+            return users;
         } catch (error) {
             throw new Error(error);
         }
@@ -22,7 +26,7 @@ export class UserRepository {
 
     async getUserByEmail(email: string): Promise<User | null> {
         try {
-            return this.prisma.user.findUnique({ where: { email } });
+            return prisma.user.findUnique({ where: { email } });
         } catch (error) {
             throw new Error(error);
         }
@@ -30,7 +34,7 @@ export class UserRepository {
 
     async getUserById(id: number): Promise<User | null> {
         try {
-            return this.prisma.user.findUnique({ where: { id } });
+            return prisma.user.findUnique({ where: { id } });
         } catch (error) {
             throw new Error(error);
         }
@@ -40,10 +44,10 @@ export class UserRepository {
         id: number,
         data: Prisma.UserUpdateInput
     ): Promise<User | null> {
-        return this.prisma.user.update({ where: { id }, data });
+        return prisma.user.update({ where: { id }, data });
     }
 
     async deleteUser(id: number): Promise<User | null> {
-        return this.prisma.user.delete({ where: { id } });
+        return prisma.user.delete({ where: { id } });
     }
 }
