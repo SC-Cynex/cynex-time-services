@@ -39,17 +39,19 @@ export class UserController {
     @Body("email") email: string,
     @Body("password") password: string
   ): Promise<{
-    status: string;
-    message: string;
-    statusCode: number;
-    token: string;
+    status: string,
+    message: string,
+    statusCode: number,
+    token: string,
+    user: number
   }> {
     try {
       const token = await this.userService.login(email, password);
       return {
         status: "success",
         message: "Login realizado com sucesso!",
-        token: token,
+        token: token.token,
+        user: token.user,
         statusCode: HttpStatus.ACCEPTED,
       };
     } catch (error) {

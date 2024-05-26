@@ -14,7 +14,7 @@ export class UserService {
     private userRepository: UserRepository,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService
-  ) { }
+  ) {}
 
   async getUsers(): Promise<User[]> {
     const users = await this.userRepository.getUsers();
@@ -37,19 +37,24 @@ export class UserService {
     return newUser;
   }
 
-  async login(email: string, password: string): Promise<string> {
+  async login(
+    email: string,
+    password: string
+  ): Promise<{ token: string; user: number }> {
     const user = await this.getUserByEmail(email);
 
     if (!user) throw new Error("Credenciais inválidas");
-    
+
     const passwordMatches = await bcrypt.compare(password, user.password);
-    
+
     if (!passwordMatches) throw new Error("Credenciais inválidas");
 
     const payload = { userId: user.id, email: user.email, role: user.name };
-    return this.jwtService.sign(payload, { secret: this.secret });
-}
-
+    return {
+      token: this.jwtService.sign(payload, { secret: this.secret }),
+      user: user.id,
+    };
+  }
 
   async deleteUser(id: number): Promise<User> {
     return this.userRepository.deleteUser(id);

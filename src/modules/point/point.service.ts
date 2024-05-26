@@ -1,17 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { PointRepository } from './point.repository';
-import { Prisma } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PointRepository } from "./point.repository";
+import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class PointService {
-  constructor(
-    private readonly pointRepository: PointRepository
-  ) {}
+  constructor(private readonly pointRepository: PointRepository) {}
 
-  create(createPointDto: Prisma.PointEvCreateInput) {
-    return this.pointRepository.createPoint(createPointDto);
-  }
-
+  async create(createPointDto: Prisma.PointEvCreateInput) {
+    try {
+      return await this.pointRepository.createPoint(createPointDto);
+    } catch (error) {
+      throw new Error(`Service Error: ${error.message}`);
+    }
+  } 
+  
   findAll() {
     return this.pointRepository.getPoints();
   }

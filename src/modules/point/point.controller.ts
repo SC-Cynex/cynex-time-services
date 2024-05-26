@@ -1,16 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PointService } from './point.service';
-import { Prisma } from '@prisma/client';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  HttpException,
+} from "@nestjs/common";
+import { PointService } from "./point.service";
+import { Prisma } from "@prisma/client";
 
-@Controller('point')
+@Controller("point")
 export class PointController {
-  constructor(
-    private readonly pointService: PointService
-  ) {}
+  constructor(private readonly pointService: PointService) {}
 
   @Post()
-  create(@Body() createPointDto: Prisma.PointEvCreateInput) {
-    return this.pointService.create(createPointDto);
+  async create(
+    @Body() createPointDto: Prisma.PointEvCreateInput
+  ): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      const hour = await this.pointService.create(createPointDto);
+      return {
+        status: "success",
+        message: "Seu ponto foi registrado com sucesso às" + hour.hour,
+        statusCode: HttpStatus.ACCEPTED,
+      };
+    } catch (error) {
+      throw new HttpException(
+        "Erro ao registrar o ponto" + error,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
@@ -18,18 +40,21 @@ export class PointController {
     return this.pointService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.pointService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePointDto: Prisma.PointEvUpdateInput) {
+  @Patch(":id")
+  update(
+    @Param("id") id: string,
+    @Body() updatePointDto: Prisma.PointEvUpdateInput
+  ) {
     return this.pointService.update(+id, updatePointDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.pointService.remove(+id);
   }
 }
