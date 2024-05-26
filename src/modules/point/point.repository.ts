@@ -1,14 +1,15 @@
 import { Prisma, PointEv } from "@prisma/client";
 import { PrismaService } from "src/services/prisma/prisma.service";
 
+const prisma = new PrismaService();
+
 export class PointRepository {
     constructor(
-        private readonly prisma: PrismaService
     ) { }
 
     async createPoint(data: Prisma.PointEvCreateInput): Promise<PointEv> {
         try {
-            return this.prisma.pointEv.create({ data });
+            return await prisma.pointEv.create({ data });
         } catch (error) {
             throw new Error(error);
         }
@@ -16,7 +17,7 @@ export class PointRepository {
 
     async getPoints(): Promise<PointEv[]> {
         try {
-            return this.prisma.pointEv.findMany();
+            return await prisma.pointEv.findMany();
         } catch (error) {
             throw new Error(error);
         }
@@ -24,7 +25,7 @@ export class PointRepository {
 
     async getPointById(id: number): Promise<PointEv | null> {
         try {
-            return this.prisma.pointEv.findUnique({ where: { id } });
+            return await prisma.pointEv.findUnique({ where: { id } });
         } catch (error) {
             throw new Error(error);
         }
@@ -32,7 +33,7 @@ export class PointRepository {
 
     async updatePoint(id: number, data: Prisma.PointEvUpdateInput): Promise<PointEv | null> {
         try {
-            return this.prisma.pointEv.update({ where: { id }, data });
+            return await prisma.pointEv.update({ where: { id }, data });
         } catch (error) {
             throw new Error(error);
         }
@@ -40,7 +41,7 @@ export class PointRepository {
 
     async deletePoint(id: number): Promise<PointEv | null> {
         try {
-            return this.prisma.pointEv.delete({ where: { id } });
+            return await prisma.pointEv.delete({ where: { id } });
         } catch (error) {
             throw new Error(error);
         }
