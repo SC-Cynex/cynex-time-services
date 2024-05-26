@@ -1,14 +1,14 @@
 import { Prisma, Team } from "@prisma/client";
 import { PrismaService } from "src/services/prisma/prisma.service";
 
-const prisma = new PrismaService();
-
 export class TeamRepository {
-    constructor() { }
+    constructor(
+        private readonly prisma: PrismaService
+    ) { }
 
     async createTeam(data: Prisma.TeamCreateInput): Promise<Team> {
         try {
-            return prisma.team.create({ data });
+            return this.prisma.team.create({ data });
         } catch (error) {
             throw new Error(error);
         }
@@ -16,7 +16,7 @@ export class TeamRepository {
 
     async getTeams(): Promise<Team[]> {
         try {
-            let teams = await prisma.team.findMany();
+            let teams = await this.prisma.team.findMany();
             return teams;
         } catch (error) {
             throw new Error(error);
@@ -25,17 +25,17 @@ export class TeamRepository {
 
     async getTeamById(id: number): Promise<Team | null> {
         try {
-            return prisma.team.findUnique({ where: { id } });
+            return this.prisma.team.findUnique({ where: { id } });
         } catch (error) {
             throw new Error(error);
         }
     }
 
     async updateTeam(id: number, data: Prisma.TeamUpdateInput): Promise<Team | null> {
-        return prisma.team.update({ where: { id }, data });
+        return this.prisma.team.update({ where: { id }, data });
     }
 
     async deleteTeam(id: number): Promise<Team | null> {
-        return prisma.team.delete({ where: { id } });
+        return this.prisma.team.delete({ where: { id } });
     }
 }

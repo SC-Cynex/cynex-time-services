@@ -7,6 +7,7 @@ import { TeamModule } from './modules/team/team.module';
 import { DepartmentModule } from './modules/department/department.module';
 import { SeedModule } from './services/seed/seed.module';
 import { SeedService } from './services/seed/seed.service';
+import { PointModule } from './modules/point/point.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SeedService } from './services/seed/seed.service';
     TeamModule,
     DepartmentModule,
     SeedModule,
+    PointModule,
     ConfigModule.forRoot({
       load: [configurationConfig],
       isGlobal: true
