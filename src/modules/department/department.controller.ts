@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { Prisma } from '@prisma/client';
 
@@ -7,8 +7,23 @@ export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 
   @Post()
-  create(@Body() createDepartmentDto: Prisma.DepartmentCreateInput) {
-    return this.departmentService.create(createDepartmentDto);
+  async create(
+    @Body() createDepartmentDto: Prisma.DepartmentCreateInput
+  ): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.departmentService.create(createDepartmentDto);
+      return {        
+        status: "success",
+        message: "Departamento registrado com sucesso",
+        statusCode: HttpStatus.CREATED,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: "Erro ao registrar o departamento!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 
   @Get()
