@@ -23,7 +23,9 @@ export class SeedService implements OnModuleInit {
             const existingRole = await prisma.role.findFirst({ where: { name: roleName } });
             if (!existingRole) {
                 await prisma.role.create({
-                    data: { name: roleName }
+                    data: { name: roleName,
+                            accessLevel: roleName as any
+                    }
                 });
             }
         }
