@@ -7,7 +7,7 @@ export class PointRepository {
   constructor() { }
 
   async createPoint(data: Prisma.PointEvCreateInput): Promise<PointEv> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(async () => {
         try {
           const pointEv = await prisma.pointEv.create({ data });
