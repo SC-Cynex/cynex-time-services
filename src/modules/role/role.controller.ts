@@ -8,6 +8,7 @@ export class RoleController {
 
   @Post()
   create(@Body() createRoleDto: Prisma.RoleCreateInput) {
+    console.log(createRoleDto);
     return this.roleService.create(createRoleDto);
   }
 
