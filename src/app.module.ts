@@ -9,6 +9,7 @@ import { SeedModule } from './services/seed/seed.module';
 import { SeedService } from './services/seed/seed.service';
 import { PointModule } from './modules/point/point.module';
 import { HourModule } from './modules/hour/hour.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { HourModule } from './modules/hour/hour.module';
       isGlobal: true
     }),
     HourModule,
+    AddressModule,
   ],
   controllers: [],
   providers: [

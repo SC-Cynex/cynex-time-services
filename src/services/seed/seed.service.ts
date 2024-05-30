@@ -3,7 +3,7 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { PrismaService } from "src/services/prisma/prisma.service";
 import { RoleNames, Address } from "@prisma/client";
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from "bcrypt";
 
 const prisma = new PrismaService();
 
@@ -77,7 +77,8 @@ export class SeedService implements OnModuleInit {
         city: "Joinville",
         state: "Santa Catarina",
         zipCode: "89450-568",
-        country: "Brasil",
+        neighborhood: "Itaum",
+        number: "123",
       };
       await prisma.address.create({
         data: newAddress,
@@ -92,7 +93,7 @@ export class SeedService implements OnModuleInit {
     });
     if (!existingAdmin) {
       // Criar um novo usuário admin
-      const hashedPassword = await bcrypt.hash('admin123', 10);
+      const hashedPassword = await bcrypt.hash("admin123", 10);
       const adminRole = await prisma.role.findFirst({
         where: { name: RoleNames.ADMIN },
       });

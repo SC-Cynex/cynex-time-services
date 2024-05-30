@@ -71,7 +71,8 @@ model Address {
   city    String
   state   String
   zipCode String
-  country String
+  neighborhood String
+  number String
   users   User[]
 }
 
