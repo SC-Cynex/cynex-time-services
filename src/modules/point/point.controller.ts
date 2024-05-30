@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpStatus,
+  Query,
 } from "@nestjs/common";
 import { PointService } from "./point.service";
 import { Prisma } from "@prisma/client";
@@ -20,6 +21,7 @@ export class PointController {
     @Body() createPointDto: Prisma.PointEvCreateInput
   ): Promise<{ status: string; message: string; statusCode: number }> {
     try {
+      debugger
       const hour = await this.pointService.create(createPointDto);
       return {
         status: "success",
@@ -43,6 +45,11 @@ export class PointController {
   @Get("last-eight/:userId")
   async findLastEightPointsByUserId(@Param("userId") userId: string) {
     return this.pointService.findLastEightPointsByUserId(+userId);
+  }
+
+  @Get("historic/:userId/:month")
+  async findHistoricByUserId(@Param("userId") userId: string, @Param("month") month: string) {
+    return this.pointService.findHistoricByUserId(+userId, month);
   }
 
   @Get(":id")

@@ -4,7 +4,7 @@ import { PrismaService } from "src/services/prisma/prisma.service";
 const prisma = new PrismaService();
 
 export class PointRepository {
-  constructor() {}
+  constructor() { }
 
   async createPoint(data: Prisma.PointEvCreateInput): Promise<PointEv> {
     return new Promise((resolve, reject) => {
@@ -13,7 +13,7 @@ export class PointRepository {
           const pointEv = await prisma.pointEv.create({ data });
           resolve(pointEv);
         } catch (error) {
-          reject(error);
+          console.error(error);
         }
       }, 1000);
     });
@@ -55,19 +55,40 @@ export class PointRepository {
   }
 
   async findLastEightPointsByUserId(userId: number): Promise<PointEv[]> {
-  try {
-    return await prisma.pointEv.findMany({
-      where: {
-        userId: userId
-      },
-      take: 8, // Obter os últimos 8 registros
-      orderBy: {
-        createdAt: 'desc' // Ordenar por data de criação em ordem decrescente
-      }
-    });
-  } catch (error) {
-    throw new Error(error);
+    try {
+      return await prisma.pointEv.findMany({
+        where: {
+          userId: userId
+        },
+        take: 8,
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
-}
 
+  async findHistoricByUserId(userId: number, month: string): Promise<PointEv[]> {
+    try {
+      const startDate = new Date(new Date().getFullYear(), parseInt(month) - 1, 1);
+      const endDate = new Date(new Date().getFullYear(), parseInt(month), 0, 23, 59, 59);
+  
+      return await prisma.pointEv.findMany({
+        where: {
+          userId: userId,
+          createdAt: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

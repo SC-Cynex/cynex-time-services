@@ -24,6 +24,16 @@ export class UserService {
     return users;
   }
 
+  async getUserById(id: number): Promise<User> {
+    const user = await this.userRepository.getUserById(id);
+
+    if (!user) throw new BadRequestException("User not found");
+
+    delete user.password;
+
+    return user;
+  }
+
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     const existingUser = await this.getUserByEmail(data.email);
 

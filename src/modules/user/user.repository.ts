@@ -5,7 +5,7 @@ const prisma = new PrismaService();
 
 export class UserRepository {
   constructor(
-    ) {}
+  ) { }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     try {
@@ -40,10 +40,19 @@ export class UserRepository {
       throw new Error(error);
     }
   }
-  
+
   async getUserById(id: number): Promise<User | null> {
     try {
-      return prisma.user.findUnique({ where: { id } });
+      return prisma.user.findUnique({
+        where: { id },
+        include: {
+          address: true,
+          team: true,
+          hour: true,
+          Role: true,
+          Department: true,
+        },
+      });
     } catch (error) {
       throw new Error(error);
     }

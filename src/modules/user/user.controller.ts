@@ -13,12 +13,18 @@ import { Prisma, User } from "@prisma/client";
 
 @Controller("user")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get("users")
   async getUsers(): Promise<User[]> {
     return await this.userService.getUsers();
   }
+
+  @Get(":id")
+  async getUserById(@Param("id") id: string): Promise<User> {
+    return await this.userService.getUserById(+id);
+  }
+
   @Post("register")
   async register(
     @Body() createAuthDto: Prisma.UserCreateInput
