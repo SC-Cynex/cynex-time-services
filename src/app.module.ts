@@ -8,6 +8,7 @@ import { DepartmentModule } from './modules/department/department.module';
 import { SeedModule } from './services/seed/seed.module';
 import { SeedService } from './services/seed/seed.service';
 import { PointModule } from './modules/point/point.module';
+import { HourModule } from './modules/hour/hour.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { PointModule } from './modules/point/point.module';
       load: [configurationConfig],
       isGlobal: true
     }),
+    HourModule,
   ],
   controllers: [],
   providers: [
