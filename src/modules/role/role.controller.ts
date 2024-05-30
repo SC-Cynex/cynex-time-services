@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { Prisma } from '@prisma/client';
 
@@ -7,9 +7,23 @@ export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post()
-  create(@Body() createRoleDto: Prisma.RoleCreateInput) {
-    console.log(createRoleDto);
-    return this.roleService.create(createRoleDto);
+  async create(
+    @Body() createRoleDto: Prisma.RoleCreateInput
+  ): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.roleService.create(createRoleDto);
+      return {        
+        status: "success",
+        message: "Cargo registrado com sucesso",
+        statusCode: HttpStatus.CREATED,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: "Erro ao registrar o cargo!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 
   @Get()
