@@ -31,7 +31,7 @@ export class UserController {
   ): Promise<{ status: string; message: string }> {
     try {
       await this.userService.createUser(createAuthDto);
-      return { status: "success", message: "User registered successfully" };
+      return { status: "success", message: "Usuário registrado com sucesso" };
     } catch (error) {
       throw new HttpException(
         "Internal server error",
