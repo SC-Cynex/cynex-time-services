@@ -15,6 +15,40 @@ export class UserRepository {
     }
   }
 
+  async getUsersWithNullTeamId(): Promise<User[]> {
+    try {
+      return await prisma.user.findMany({
+        where: { teamId: null },
+        include: {
+          address: true,
+          team: true,
+          hour: true,
+          Role: true,
+          Department: true,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getUsersByTeamId(teamId: number): Promise<User[]> {
+    try {
+      return await prisma.user.findMany({
+        where: { teamId },
+        include: {
+          address: true,
+          team: true,
+          hour: true,
+          Role: true,
+          Department: true,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async getUsers(): Promise<User[]> {
     try {
       let users = await prisma.user.findMany();

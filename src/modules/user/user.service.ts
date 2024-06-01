@@ -34,10 +34,29 @@ export class UserService {
     return user;
   }
 
+  async getUsersWithNullTeamId(): Promise<User[]> {
+    const users = await this.userRepository.getUsersWithNullTeamId();
+
+    for (let user of users) delete user.password;
+
+    return users;
+  }
+
+  async getUsersByTeamId(teamId: number): Promise<User[]> {
+    const users = await this.userRepository.getUsersByTeamId(teamId);
+
+    for (let user of users) delete user.password;
+
+    return users;
+  }
+
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     const existingUser = await this.getUserByEmail(data.email);
 
-    if (existingUser) throw new BadRequestException("User already exists");
+    if (existingUser)
+      throw new BadRequestException(
+        "Este email já está cadastrado. Por favor, use um email diferente."
+      );
 
     let userData: any = data;
     const hashedPassword = await bcrypt.hash(data.password, this.saltRounds);
