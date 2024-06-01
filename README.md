@@ -40,7 +40,7 @@ docker-compose up -d
 
 ### 5. Rodar as migrações do banco de dados
 ```bash
-npx prisma migration dev
+npx prisma migrate dev
 ```
 
 ### 6. Iniciar a aplicação
