@@ -14,7 +14,7 @@ export class TeamController {
       await this.teamService.create(createTeamDto);
       return {        
         status: "success",
-        message: "Equipe registrada com sucesso",
+        message: "Equipe registrada com sucesso!",
         statusCode: HttpStatus.CREATED,
       };
     } catch (error) {
@@ -42,7 +42,20 @@ export class TeamController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<Team | null> {
-    return this.teamService.remove(+id);
+  async remove(@Param('id') id: string): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.teamService.remove(+id);
+      return {
+        status: "success",
+        message: "Equipe deletada com sucesso!",
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: "Erro ao deletar a equipe!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 }

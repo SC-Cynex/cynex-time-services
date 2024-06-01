@@ -14,13 +14,13 @@ export class HourController {
       await this.hourService.create(createHourDto);
       return {        
         status: "success",
-        message: "Hora registrada com sucesso",
+        message: "Horário registrada com sucesso!",
         statusCode: HttpStatus.CREATED,
       };
     } catch (error) {
       return {
         status: "error",
-        message: "Erro ao registrar a hora!",
+        message: "Erro ao registrar o horário!",
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }
@@ -42,7 +42,20 @@ export class HourController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.hourService.remove(+id);
+  async remove(@Param('id') id: string): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.hourService.remove(+id);
+      return {
+        status: "success",
+        message: "Horário deletado com sucesso!",
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: "Erro ao deletar o horário!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 }

@@ -14,7 +14,7 @@ export class DepartmentController {
       await this.departmentService.create(createDepartmentDto);
       return {        
         status: "success",
-        message: "Departamento registrado com sucesso",
+        message: "Departamento registrado com sucesso!",
         statusCode: HttpStatus.CREATED,
       };
     } catch (error) {
@@ -42,7 +42,20 @@ export class DepartmentController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.departmentService.remove(+id);
+  async remove(@Param('id') id: string): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.departmentService.remove(+id);
+      return {
+        status: "success",
+        message: "Departamento deletado com sucesso!",
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: "Erro ao deletar o departamento!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 }

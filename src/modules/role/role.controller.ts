@@ -14,7 +14,7 @@ export class RoleController {
       await this.roleService.create(createRoleDto);
       return {        
         status: "success",
-        message: "Cargo registrado com sucesso",
+        message: "Cargo registrado com sucesso!",
         statusCode: HttpStatus.CREATED,
       };
     } catch (error) {
@@ -42,7 +42,20 @@ export class RoleController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roleService.remove(+id);
+  async remove(@Param('id') id: string): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.roleService.remove(+id);
+      return {
+        status: "success",
+        message: "Cargo deletado com sucesso!",
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: "Erro ao deletar o cargo!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 }
