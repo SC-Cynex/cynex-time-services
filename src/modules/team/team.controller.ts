@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpStatus, Put } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { Prisma, Team } from '@prisma/client';
 
@@ -36,9 +36,25 @@ export class TeamController {
     return this.teamService.findOne(+id);
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateTeamDto: Prisma.TeamUpdateInput): Promise<Team | null> {
-    return this.teamService.update(+id, updateTeamDto);
+  @Put(':id')
+  async update(
+    @Param('id') id: string, 
+    @Body() updateTeamDto: Prisma.TeamUpdateInput
+  ): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.teamService.update(+id, updateTeamDto);
+      return {
+        status: "success",
+        message: "Horário atualizado com sucesso!",
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return{
+        status: "error",
+        message: "Erro ao atualizar o horário!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 
   @Delete(':id')

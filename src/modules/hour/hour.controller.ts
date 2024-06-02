@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpStatus, Put } from '@nestjs/common';
 import { HourService } from './hour.service';
 import { Prisma } from '@prisma/client';
 
@@ -36,9 +36,25 @@ export class HourController {
     return this.hourService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHourDto: Prisma.HourUpdateInput) {
-    return this.hourService.update(+id, updateHourDto);
+  @Put(':id')
+  async update(
+    @Param('id') id: string, 
+    @Body() updateHourDto: Prisma.HourUpdateInput
+  ): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.hourService.update(+id, updateHourDto);
+      return {
+        status: "success",
+        message: "Horário atualizado com sucesso!",
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return{
+        status: "error",
+        message: "Erro ao atualizar o horário!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 
   @Delete(':id')

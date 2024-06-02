@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpStatus, Put } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { Prisma } from '@prisma/client';
 
@@ -36,9 +36,25 @@ export class RoleController {
     return this.roleService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: Prisma.RoleUpdateInput) {
-    return this.roleService.update(+id, updateRoleDto);
+  @Put(':id')
+  async update(
+    @Param('id') id: string, 
+    @Body() updateRoleDto: Prisma.RoleUpdateInput
+  ): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.roleService.update(+id, updateRoleDto);
+      return {
+        status: "success",
+        message: "Horário atualizado com sucesso!",
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return{
+        status: "error",
+        message: "Erro ao atualizar o horário!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 
   @Delete(':id')
