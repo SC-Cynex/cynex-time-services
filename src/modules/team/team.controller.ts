@@ -45,13 +45,13 @@ export class TeamController {
       await this.teamService.update(+id, updateTeamDto);
       return {
         status: "success",
-        message: "Horário atualizado com sucesso!",
+        message: "Equipe atualizado com sucesso!",
         statusCode: HttpStatus.OK,
       };
     } catch (error) {
       return{
         status: "error",
-        message: "Erro ao atualizar o horário!",
+        message: "Erro ao atualizar o equipe!",
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }

@@ -69,7 +69,7 @@ export class UserService {
   async login(
     email: string,
     password: string
-  ): Promise<{ token: string; user: number }> {
+  ): Promise<{ token: string; user: number, team: number }> {
     const user = await this.getUserByEmail(email);
 
     if (!user) throw new Error("Credenciais inválidas");
@@ -82,7 +82,12 @@ export class UserService {
     return {
       token: this.jwtService.sign(payload, { secret: this.secret }),
       user: user.id,
+      team: user.teamId
     };
+  }
+
+  async update(id: number, updateUserDto: Prisma.UserUpdateInput) {
+    return this.userRepository.updateUser(id, updateUserDto);
   }
 
   async deleteUser(id: number): Promise<User> {

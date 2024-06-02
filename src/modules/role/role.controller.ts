@@ -45,13 +45,13 @@ export class RoleController {
       await this.roleService.update(+id, updateRoleDto);
       return {
         status: "success",
-        message: "Horário atualizado com sucesso!",
+        message: "Cargo atualizado com sucesso!",
         statusCode: HttpStatus.OK,
       };
     } catch (error) {
       return{
         status: "error",
-        message: "Erro ao atualizar o horário!",
+        message: "Erro ao atualizar o cargo!",
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }

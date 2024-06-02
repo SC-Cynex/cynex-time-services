@@ -8,7 +8,8 @@ import {
   Delete,
   HttpStatus,
   HttpException,
-  BadRequestException
+  BadRequestException,
+  Put
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { Prisma, User } from "@prisma/client";
@@ -22,7 +23,7 @@ export class UserController {
     return await this.userService.getUsers();
   }
 
-  @Get("team/null")
+  @Get("User/null")
   async getUsersWithNullTeamId(): Promise<User[]> {
     try {
       return await this.userService.getUsersWithNullTeamId();
@@ -79,6 +80,7 @@ export class UserController {
     statusCode: number;
     token: string;
     user: number;
+    team: number;
   }> {
     try {
       const token = await this.userService.login(email, password);
@@ -87,6 +89,7 @@ export class UserController {
         message: "Login realizado com sucesso!",
         token: token.token,
         user: token.user,
+        team: token.team,
         statusCode: HttpStatus.ACCEPTED,
       };
     } catch (error) {
@@ -104,9 +107,25 @@ export class UserController {
     }
   }
 
-  @Patch(":id")
-  async updateUser(@Param("id") id : string,  @Body() updateAuthDto: Prisma.UserUpdateInput): Promise<User> {
-    return await this.userService.updateUser(id, updateAuthDto);
+  @Put(':id')
+  async update(
+    @Param('id') id: string, 
+    @Body() updateUserDto: Prisma.UserUpdateInput
+  ): Promise<{ status: string; message: string; statusCode: number }> {
+    try {
+      await this.userService.update(+id, updateUserDto);
+      return {
+        status: "success",
+        message: "Usuário atualizado com sucesso!",
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return{
+        status: "error",
+        message: "Erro ao atualizar o usuário!",
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 
   @Delete(":id")
