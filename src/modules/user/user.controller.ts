@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Body,
   Param,
   Delete,
@@ -101,6 +102,11 @@ export class UserController {
         );
       }
     }
+  }
+
+  @Patch(":id")
+  async updateUser(@Param("id") id : string,  @Body() updateAuthDto: Prisma.UserUpdateInput): Promise<User> {
+    return await this.userService.updateUser(id, updateAuthDto);
   }
 
   @Delete(":id")

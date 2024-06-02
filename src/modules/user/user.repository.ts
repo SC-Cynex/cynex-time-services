@@ -92,12 +92,20 @@ export class UserRepository {
     }
   }
 
-  async updateUser(
-    id: number,
-    data: Prisma.UserUpdateInput
-  ): Promise<User | null> {
-    return prisma.user.update({ where: { id }, data });
+  async updateUser(id: number, data: Prisma.UserUpdateInput): Promise<User> {
+    try {
+      return prisma.user.update({
+        where: { id },
+        data: {
+          name: data.name,
+          email: data.email,
+        }
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
+  
 
   async deleteUser(id: number): Promise<User | null> {
     return prisma.user.delete({ where: { id } });

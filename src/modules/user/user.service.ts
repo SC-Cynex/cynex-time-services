@@ -89,6 +89,14 @@ export class UserService {
     return this.userRepository.deleteUser(id);
   }
 
+  async updateUser(id: string, data: Prisma.UserUpdateInput): Promise<User> {
+    try {
+      return this.userRepository.updateUser(parseInt(id, 10), data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  
   async getUserByEmail(email: string): Promise<User | null> {
     return this.userRepository.getUserByEmail(email);
   }
